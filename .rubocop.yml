@@ -1,0 +1,11 @@
+AllCops:
+    TargetRubyVersion: 3.1
+
+Lint/MissingSuper:
+    Enabled: False
+
+Metrics/MethodLength:
+    Enabled: False
+
+Metrics/ParametersLists:
+    Enabled: False
