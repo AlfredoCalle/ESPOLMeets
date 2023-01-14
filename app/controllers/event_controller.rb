@@ -9,7 +9,10 @@ require_relative '../../lib/use_cases/create_event'
 
 module ESPOLMeets
   module Controller
+    # Controller for events.
     class EventController < Sinatra::Base
+      configure { enable :logging }
+
       def initialize(evt_repository:)
         super
         @evt_repository = evt_repository
@@ -20,7 +23,7 @@ module ESPOLMeets
         return 400 if body.empty?
 
         logger.info("Received request to create event: #{body}")
-        data = JSON.parse(body,  {symbolize_names: true})
+        data = JSON.parse(body, { symbolize_names: true })
 
         new_evt = Contracts::NewEvent.new(
           name: data[:name],
@@ -33,8 +36,10 @@ module ESPOLMeets
         )
 
         result = UseCase::CreateEvent
-          .new(new_evt:, evt_repository:  @evt_repository)
-          .execute
+                 .new(new_evt:, evt_repository: @evt_repository)
+                 .execute
+
+        logger.info("Sending result: #{result}")
 
         if result.nil?
           400

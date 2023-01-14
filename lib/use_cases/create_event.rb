@@ -17,7 +17,7 @@ module ESPOLMeets
 
       def execute
         evt_id = Random.new.uuid
-        # TODO: Replace by create to perform validation.
+
         evt = Domain::Event.new(
           evt_id:,
           name: @new_evt.name,
@@ -27,6 +27,7 @@ module ESPOLMeets
           description: @new_evt.description,
           price: @new_evt.price
         )
+
         @evt_repository.save(evt)
       end
     end

@@ -7,5 +7,5 @@ Lint/MissingSuper:
 Metrics/MethodLength:
     Enabled: False
 
-Metrics/ParametersLists:
+Metrics/ParameterLists:
     Enabled: False

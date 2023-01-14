@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'date'
+require 'time'
+
 module ESPOLMeets
   module Domain
     # Represents an event's date and time.
@@ -7,8 +10,8 @@ module ESPOLMeets
       attr_reader :date, :time
 
       def initialize(date:, time:)
-        @date = date
-        @time = time
+        @date = Date.parse(date)
+        @time = Time.parse(time)
       end
     end
   end
