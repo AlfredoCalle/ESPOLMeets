@@ -12,6 +12,11 @@ module ESPOLMeets
         raise NotImplementedError
       end
 
+      # Get all registered events.
+      def get_all
+        raise NotImplementedError
+      end
+
       # Replace the event identified by the provided id with
       # the provided event.
       def update(evt_id:, evt:)

@@ -12,6 +12,8 @@ module ESPOLMeets
       def initialize(date:, time:)
         @date = Date.parse(date)
         @time = Time.parse(time)
+      rescue StandardError
+        raise DomainError, 'Invalid date or time'
       end
     end
   end

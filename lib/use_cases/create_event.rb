@@ -10,9 +10,10 @@ module ESPOLMeets
   module UseCase
     # Use case for creating a new event.
     class CreateEvent < UseCase
-      def initialize(new_evt:, evt_repository:)
+      def initialize(new_evt:, evt_repository:, evt_formatter:)
         @new_evt = new_evt
         @evt_repository = evt_repository
+        @evt_formatter = evt_formatter
       end
 
       def execute
@@ -28,7 +29,9 @@ module ESPOLMeets
           price: @new_evt.price
         )
 
-        @evt_repository.save(evt)
+        return unless @evt_repository.save(evt)
+
+        @evt_formatter.format(evt)
       end
     end
   end

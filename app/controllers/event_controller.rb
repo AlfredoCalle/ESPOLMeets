@@ -6,6 +6,9 @@ require 'sinatra/base'
 
 require_relative '../../lib/contracts/new_event'
 require_relative '../../lib/use_cases/create_event'
+require_relative '../../lib/use_cases/delete_event'
+require_relative '../../lib/use_cases/get_all_events'
+require_relative '../../lib/domain/domain_error'
 
 module ESPOLMeets
   module Controller
@@ -18,7 +21,30 @@ module ESPOLMeets
         @evt_repository = evt_repository
       end
 
-      post '/events' do
+      delete '/events/:id' do
+        evt_id = params[:id]
+        logger.info("Received request to delete event with id '#{evt_id}'")
+
+        result = UseCase::DeleteEvent.new(evt_id:, evt_repository: @evt_repository).execute
+
+        if result
+          logger.info("Delete event with id '#{evt_id}'")
+        else
+          logger.info("Failed to delete event with id '#{evt_id}'")
+        end
+
+        204
+      end
+
+      get '/events', provides: 'application/json' do
+        evt_formatter = Formatters::HashEventFormatter.new
+        result = UseCase::GetAllEvents
+                 .new(evt_repository: @evt_repository, evt_formatter:)
+                 .execute
+        JSON.generate(result)
+      end
+
+      post '/events', provides: 'application/json' do
         body = request.body.read
         return 400 if body.empty?
 
@@ -35,8 +61,9 @@ module ESPOLMeets
           price: data[:price]
         )
 
+        evt_formatter = Formatters::JsonEventFormatter.new
         result = UseCase::CreateEvent
-                 .new(new_evt:, evt_repository: @evt_repository)
+                 .new(new_evt:, evt_repository: @evt_repository, evt_formatter:)
                  .execute
 
         logger.info("Sending result: #{result}")
@@ -46,6 +73,8 @@ module ESPOLMeets
         else
           [200, result]
         end
+      rescue Domain::DomainError => e
+        [400, JSON.dump({ error: e })]
       end
     end
   end
