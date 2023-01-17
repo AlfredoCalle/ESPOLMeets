@@ -28,6 +28,7 @@ module ESPOLMeets
                     result
                 else
                     logger.info("Failed to get organization with id '#{org_id}'")
+                    400
                 end
             end
 
