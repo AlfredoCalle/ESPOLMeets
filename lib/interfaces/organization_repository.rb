@@ -1,6 +1,6 @@
 module ESPOLMeets
     module Interfaces
-        class OrgRepository
+        class OrganizationRepository
             # Save an organization.
             def save(org:)
                 raise NotImplementedError

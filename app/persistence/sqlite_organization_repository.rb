@@ -4,7 +4,7 @@ require_relative '../../lib/domain/organization'
 module ESPOLMeets
   module Persistence
     # SQLite implementation of an Organization repository.
-    class SQLiteOrganizationRepository < Interfaces::EventRepository
+    class SQLiteOrganizationRepository < Interfaces::OrganizationRepository
       def initialize(db)
         @db = db
         create_table

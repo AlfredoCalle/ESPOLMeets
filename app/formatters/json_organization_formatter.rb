@@ -5,7 +5,7 @@ module ESPOLMeets
     class JsonOrganizationFormatter < Interfaces::OrganizationFormatter
       def format(org)
         JSON.dump({
-                    org_id: org.evt_id,
+                    org_id: org.org_id,
                     name: org.name,
                     description: org.description
                   })

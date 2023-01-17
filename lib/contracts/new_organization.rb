@@ -3,8 +3,7 @@ module ESPOLMeets
       # A request to create a new organization.
       class NewOrganization
         attr_reader :org_id, :name, :description
-        def initialize(org_id:, name:, description: '')
-            @org_id = org_id
+        def initialize(name:, description: '')
             @name = name
             @description = description
         end
