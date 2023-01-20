@@ -2,9 +2,11 @@ require 'json'
 require 'sinatra/base'
 
 require_relative '../../lib/contracts/new_organization'
+require_relative '../../lib/contracts/same_organization'
 require_relative '../../lib/use_cases/get_organization'
 require_relative '../../lib/use_cases/get_all_organizations'
 require_relative '../../lib/use_cases/create_organization'
+require_relative '../../lib/use_cases/update_organization'
 require_relative '../../lib/use_cases/delete_organization'
 require_relative '../../lib/domain/domain_error'
 
@@ -83,6 +85,26 @@ module ESPOLMeets
                 end
             rescue Domain::DomainError => e
               [400, JSON.dump({ error: e })]
+            end
+
+            patch '/organizations', provides: 'application/json' do
+              body = request.body.read
+              return 400 if body.empty?
+
+              logger.info("Received request to update organization: #{body}")
+              data = JSON.parse(body, { symbolize_names: true })
+
+              new_org = Contracts::SameOrganization.new(
+                org_id: data[:org_id],
+                name: data[:name],
+                description: data[:description]
+              )
+
+              org_formatter = Formatters::HashOrganizationFormatter.new
+              result = UseCase::UpdateOrganization
+                       .new(new_org:, org_repository: @org_repository, org_formatter:)
+                       .execute
+              JSON.generate(result)
             end
 
         end
