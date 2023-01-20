@@ -5,7 +5,7 @@ require_relative '../domain/organization'
 
 module ESPOLMeets
     module UseCase
-        class CreateOrganization < UseCase
+        class UpdateOrganization < UseCase
             def initialize(new_org:, org_repository:, org_formatter:)
                 @new_org = new_org
                 @org_repository = org_repository
@@ -13,7 +13,7 @@ module ESPOLMeets
             end
 
             def execute
-                org_id = Random.new.uuid
+                org_id = @new_org.org_id
 
                 org = Domain::Organization.new(
                 org_id:,
@@ -21,7 +21,7 @@ module ESPOLMeets
                 description: @new_org.description
                 )
 
-                return unless @org_repository.save(org)
+                return unless @org_repository.update(org)
 
                 @org_formatter.format(org)
             end

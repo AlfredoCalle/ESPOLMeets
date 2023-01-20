@@ -31,6 +31,7 @@ module ESPOLMeets
           logger.info("Delete event with id '#{evt_id}'")
         else
           logger.info("Failed to delete event with id '#{evt_id}'")
+          400
         end
 
         204

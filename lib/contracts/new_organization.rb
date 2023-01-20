@@ -2,7 +2,7 @@ module ESPOLMeets
     module Contracts
       # A request to create a new organization.
       class NewOrganization
-        attr_reader :org_id, :name, :description
+        attr_reader :name, :description
         def initialize(name:, description: '')
             @name = name
             @description = description

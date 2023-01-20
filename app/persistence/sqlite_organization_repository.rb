@@ -63,6 +63,25 @@ module ESPOLMeets
         @db.changes == 1
       end
 
+      def update(org)
+        org_id = org.org_id
+        organization = get(org_id)
+        
+        values = [
+          org.name ? org.name : organization.name, 
+          org.description ? org.description : organization.description,
+          org_id
+        ]
+
+        @db.execute <<-SQL, values
+          UPDATE organizations
+          SET name = ?, description = ?
+          WHERE org_id = ?
+        SQL
+
+        @db.changes == 1
+      end
+
       def delete(org_id)
         @db.execute('DELETE FROM organizations WHERE org_id = ?', org_id)
         @db.changes == 1
