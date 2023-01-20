@@ -9,6 +9,11 @@ module ESPOLMeets
             def get(org_id:)
                 raise NotImplementedError
             end
+
+            # Get all registered organizations.
+            def get_all
+                raise NotImplementedError
+            end
         end
     end
 end

@@ -3,6 +3,7 @@ require 'sinatra/base'
 
 require_relative '../../lib/contracts/new_organization'
 require_relative '../../lib/use_cases/get_organization'
+require_relative '../../lib/use_cases/get_all_organizations'
 require_relative '../../lib/use_cases/create_organization'
 require_relative '../../lib/domain/domain_error'
 
@@ -12,6 +13,14 @@ module ESPOLMeets
             def initialize(org_repository:)
                 super
                 @org_repository = org_repository
+            end
+
+            get '/organizations', provides: 'application/json' do
+              org_formatter = Formatters::HashOrganizationFormatter.new
+              result = UseCase::GetAllOrganizations
+                       .new(org_repository: @org_repository, org_formatter:)
+                       .execute
+              JSON.generate(result)
             end
 
             get '/organizations/:org_id', provides: 'application/json' do
