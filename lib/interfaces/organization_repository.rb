@@ -14,6 +14,11 @@ module ESPOLMeets
             def get_all
                 raise NotImplementedError
             end
+
+            # Delete the organization corresponding to the provided event id.
+            def delete(org_id:)
+                raise NotImplementedError
+            end
         end
     end
 end

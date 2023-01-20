@@ -5,6 +5,7 @@ require_relative '../../lib/contracts/new_organization'
 require_relative '../../lib/use_cases/get_organization'
 require_relative '../../lib/use_cases/get_all_organizations'
 require_relative '../../lib/use_cases/create_organization'
+require_relative '../../lib/use_cases/delete_organization'
 require_relative '../../lib/domain/domain_error'
 
 module ESPOLMeets
@@ -13,6 +14,21 @@ module ESPOLMeets
             def initialize(org_repository:)
                 super
                 @org_repository = org_repository
+            end
+
+            delete '/organizations/:id' do
+              org_id = params[:id]
+              logger.info("Received request to delete organization with id '#{org_id}'")
+      
+              result = UseCase::DeleteOrganization.new(org_id:, org_repository: @org_repository).execute
+      
+              if result
+                logger.info("Delete organization with id '#{org_id}'")
+              else
+                logger.info("Failed to delete organization with id '#{org_id}'")
+              end
+      
+              204
             end
 
             get '/organizations', provides: 'application/json' do
