@@ -4,5 +4,4 @@ source "https://rubygems.org"
 
 gem "sinatra"
 gem "puma"
-gem "rackup"
 gem "sqlite3", force_ruby_platform: true

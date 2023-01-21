@@ -9,6 +9,7 @@ require_relative '../../lib/use_cases/create_event'
 require_relative '../../lib/use_cases/delete_event'
 require_relative '../../lib/use_cases/get_all_events'
 require_relative '../../lib/domain/domain_error'
+require_relative '../formatters/hash_event_formatter'
 
 module ESPOLMeets
   module Controller
@@ -21,7 +22,7 @@ module ESPOLMeets
         @evt_repository = evt_repository
       end
 
-      delete '/events/:id' do
+      delete '/:id' do
         evt_id = params[:id]
         logger.info("Received request to delete event with id '#{evt_id}'")
 
@@ -37,7 +38,7 @@ module ESPOLMeets
         204
       end
 
-      get '/events', provides: 'application/json' do
+      get '/', provides: 'application/json' do
         evt_formatter = Formatters::HashEventFormatter.new
         result = UseCase::GetAllEvents
                  .new(evt_repository: @evt_repository, evt_formatter:)
@@ -45,7 +46,7 @@ module ESPOLMeets
         JSON.generate(result)
       end
 
-      post '/events', provides: 'application/json' do
+      post '/', provides: 'application/json' do
         body = request.body.read
         return 400 if body.empty?
 

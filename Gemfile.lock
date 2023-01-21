@@ -7,12 +7,9 @@ GEM
     nio4r (2.5.8)
     puma (6.0.2)
       nio4r (~> 2.0)
-    rack (2.2.5)
+    rack (2.2.6.2)
     rack-protection (3.0.5)
       rack
-    rackup (0.1.0)
-      rack
-      webrick
     ruby2_keywords (0.0.5)
     sinatra (3.0.5)
       mustermann (~> 3.0)
@@ -22,17 +19,14 @@ GEM
     sqlite3 (1.6.0)
       mini_portile2 (~> 2.8.0)
     tilt (2.0.11)
-    webrick (1.7.0)
 
 PLATFORMS
-  x64-mingw-ucrt
   x86_64-linux
 
 DEPENDENCIES
   puma
-  rackup
   sinatra
   sqlite3
 
 BUNDLED WITH
-   2.3.26
+   2.4.4
