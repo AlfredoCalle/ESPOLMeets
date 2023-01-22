@@ -21,9 +21,14 @@ window.addEventListener("DOMContentLoaded", async () => {
       <h5 class="card-title">${theEvent.name}</h5>
       <p class="card-text px-2">
        <span class="row">Description: ${theEvent.description}</span>
-       <span class="row">Price: $${theEvent.price}</span>
+       <span class="row">${
+         theEvent.price ? "Price: $" + theEvent.price : ""
+       }</span>
       </p>
       <p>
+      <a href="/pages/organization.html?org_id=${
+        theEvent.org_id
+      }" class="btn btn-primary">Organizer</a>
       <a href="#" class="btn btn-danger" onclick="deleteEvent('${evt_id}')">Delete</a>
     </div>
   </div>

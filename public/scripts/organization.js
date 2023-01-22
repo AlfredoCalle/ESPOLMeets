@@ -7,11 +7,13 @@ window.addEventListener("DOMContentLoaded", async () => {
   org = await res.json();
 
   organization.innerHTML = `
-  <div class="card mb-3 border-0">
-    <div class="text-bg-dark p-5 d-flex justify-content-center align-items-center"><h5 class="card-title">${org.name}</h5></div>
-    <div class="card-body d-flex justify-content-center align-items-center">
-      <p class="card-text">${org.description}</p>
+    <div class="card mb-3 border-0">
+      <div class="text-bg-dark p-5 d-flex justify-content-center align-items-center">
+        <h5 class="card-title">${org.name}</h5>
+      </div>
+      <div class="card-body d-flex justify-content-center align-items-center">
+        <p class="card-text">${org.description}</p>
+      </div>
     </div>
-  </div>
   `;
 });

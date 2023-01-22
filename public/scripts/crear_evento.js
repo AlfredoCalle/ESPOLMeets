@@ -2,6 +2,7 @@ const tituloF = document.getElementById("titulo");
 const fechaF = document.getElementById("fecha");
 const precioF = document.getElementById("precio");
 const descripcionF = document.getElementById("descripcion");
+const horaF = document.getElementById("hora");
 
 const submitForm = document.getElementById("submit-form");
 
@@ -10,10 +11,17 @@ submitForm.addEventListener("click", async (e) => {
 
   const titulo = tituloF.value;
   const fecha = fechaF.value;
+  const hora = horaF.value;
   const precio = precioF.value;
   const descripcion = descripcionF.value;
 
-  if (titulo === "" || fecha === "" || precio === "" || descripcion === "") {
+  if (
+    titulo === "" ||
+    fecha === "" ||
+    precio === "" ||
+    descripcion === "" ||
+    hora === ""
+  ) {
     alert("Please fill all the fields");
     return;
   }
@@ -27,10 +35,8 @@ submitForm.addEventListener("click", async (e) => {
       location: "Guayaquil",
       description: descripcion,
       price: precio,
-      // TODO: Get real time.
-      time: "00:00",
-      // TODO: Get org id somehow.
-      org_id: "1234",
+      time: hora,
+      org_id: "1234", // FIXME: This is a hardcoded org id in the backend.
     }),
     headers: {
       "Content-Type": "application/json",

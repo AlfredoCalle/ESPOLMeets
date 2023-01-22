@@ -14,6 +14,7 @@ module ESPOLMeets
       end
 
       def create_table
+        @db.execute('drop table if exists events;')
         @db.execute <<-SQL
           create table if not exists events (
             evt_id TEXT NOT NULL PRIMARY KEY,
@@ -25,6 +26,12 @@ module ESPOLMeets
             description TEXT,
             price NUMERIC
           );
+        SQL
+
+        @db.execute <<-SQL
+          insert into events (evt_id, name, org_id, date, time, location, description)
+          values ('1', 'Install party', 'a197a335-7e39-4315-b08f-81128caa6e10', '10/02/2023', '16:30', 'ESPOL', 'Instalar linux'),
+                 ('2', 'Hackathon', 'a197a335-7e39-4315-b08f-81128caa6e10', '16/02/2023', '10:00', 'ESPOL', 'Hackear con amigos');
         SQL
       end
 

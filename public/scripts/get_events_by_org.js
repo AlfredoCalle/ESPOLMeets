@@ -5,6 +5,8 @@ const gotoEvent = (evt_id) => {
 };
 
 window.addEventListener("DOMContentLoaded", async () => {
+  // TODO: Change this for a query that sends events for
+  // that specific organization.
   const res = await fetch(`/api/v1/events/`);
   if (res.status !== 200) return;
   events = await res.json();

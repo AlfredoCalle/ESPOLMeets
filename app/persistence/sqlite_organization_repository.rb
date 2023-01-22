@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../lib/interfaces/organization_repository'
 require_relative '../../lib/domain/organization'
 
@@ -11,12 +13,20 @@ module ESPOLMeets
       end
 
       def create_table
+        @db.execute('drop table if exists organizations;')
+
         @db.execute <<-SQL
           create table if not exists organizations (
             org_id TEXT NOT NULL PRIMARY KEY,
             name TEXT NOT NULL,
             description TEXT
           );
+        SQL
+
+        @db.execute <<-SQL
+          insert into organizations (org_id, name, description)
+          values ('a197a335-7e39-4315-b08f-81128caa6e10', 'Kokoa', 'Club de Software Libre'),
+                 ('1234', 'Club de Lenguajes', 'Hablamos de lenguajes wooooo');
         SQL
       end
 
@@ -66,10 +76,10 @@ module ESPOLMeets
       def update(org)
         org_id = org.org_id
         organization = get(org_id)
-        
+
         values = [
-          org.name ? org.name : organization.name, 
-          org.description ? org.description : organization.description,
+          org.name || organization.name,
+          org.description || organization.description,
           org_id
         ]
 
