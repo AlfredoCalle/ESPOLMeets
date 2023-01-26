@@ -19,7 +19,8 @@ module ESPOLMeets
           create table if not exists organizations (
             org_id TEXT NOT NULL PRIMARY KEY,
             name TEXT NOT NULL,
-            description TEXT
+            description TEXT,
+            is_followed INTEGER NOT NULL DEFAULT 0
           );
         SQL
 
@@ -34,13 +35,14 @@ module ESPOLMeets
         Domain::Organization.new(
           org_id: row[0],
           name: row[1],
-          description: row[2]
+          description: row[2],
+          is_followed: row[3]
         )
       end
 
       def get(org_id)
         result = @db.get_first_row <<-SQL, org_id
-          SELECT org_id, name, description
+          SELECT org_id, name, description, is_followed
             FROM organizations
            WHERE org_id = ?
         SQL
@@ -51,8 +53,20 @@ module ESPOLMeets
 
       def get_all
         result = @db.execute <<-SQL
-          SELECT org_id, name, description
+          SELECT org_id, name, description, is_followed
             FROM organizations
+        SQL
+
+        result.inject([]) do |organizations, row|
+          organizations << org_from_row(row)
+        end
+      end
+
+      def get_all_follow
+        result = @db.execute <<-SQL
+          SELECT org_id, name, description, is_followed
+          FROM organizations
+          WHERE is_followed = 1
         SQL
 
         result.inject([]) do |organizations, row|
@@ -68,6 +82,16 @@ module ESPOLMeets
         @db.execute <<-SQL, values
           INSERT INTO organizations (org_id, name, description)
           VALUES (?, ?, ?)
+        SQL
+
+        @db.changes == 1
+      end
+
+      def follow(org_id)
+        @db.execute <<-SQL, org_id
+          UPDATE organizations
+          SET is_followed = 1
+          WHERE org_id = ?
         SQL
 
         @db.changes == 1

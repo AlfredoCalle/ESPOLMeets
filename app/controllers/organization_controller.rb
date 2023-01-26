@@ -7,8 +7,10 @@ require_relative '../../lib/contracts/new_organization'
 require_relative '../../lib/contracts/same_organization'
 require_relative '../../lib/use_cases/get_organization'
 require_relative '../../lib/use_cases/get_all_organizations'
+require_relative '../../lib/use_cases/get_all_follow_organizations'
 require_relative '../../lib/use_cases/create_organization'
 require_relative '../../lib/use_cases/update_organization'
+require_relative '../../lib/use_cases/follow_organization'
 require_relative '../../lib/use_cases/delete_organization'
 require_relative '../../lib/domain/domain_error'
 
@@ -42,6 +44,30 @@ module ESPOLMeets
                  .new(org_repository: @org_repository, org_formatter:)
                  .execute
         JSON.generate(result)
+      end
+
+      get '/follows', provides: 'application/json' do
+        org_formatter = Formatters::HashOrganizationFormatter.new
+        result = UseCase::GetAllFollowOrganizations
+                 .new(org_repository: @org_repository, org_formatter:)
+                 .execute
+        JSON.generate(result)
+      end
+
+      get '/follow/:org_id', provides: 'application/json' do
+        org_id = params[:org_id]
+        logger.info("Received request to follow organization with id '#{org_id}'")
+
+        result = UseCase::FollowOrganization
+                 .new(org_id:, org_repository: @org_repository)
+                 .execute
+
+        if result
+          result
+        else
+          logger.info("Failed to follow organization with id '#{org_id}'")
+          400
+        end
       end
 
       get '/:org_id', provides: 'application/json' do
